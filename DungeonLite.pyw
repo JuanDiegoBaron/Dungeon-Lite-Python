@@ -92,7 +92,42 @@ def EDUA():
 def mejorarObjeto():
 	pass
 def tirarDados():
-	pass	
+	
+	aux1=choice([1,2,3,4,5,6])
+
+	valorDado1.set(aux1)
+
+	if(aux1==1):
+		Label(framePrincipal,image=img_dado1).place(x=400,y=640)
+	elif(aux1==2):
+		Label(framePrincipal,image=img_dado2).place(x=400,y=640)	
+	elif(aux1==3):
+		Label(framePrincipal,image=img_dado3).place(x=400,y=640)
+	elif(aux1==4):
+		Label(framePrincipal,image=img_dado4).place(x=400,y=640)
+	elif(aux1==5):
+		Label(framePrincipal,image=img_dado5).place(x=400,y=640)
+	elif(aux1==6):
+		Label(framePrincipal,image=img_dado6).place(x=400,y=640)
+
+	aux2=choice([1,2,3,4,5,6])
+
+	valorDado2.set(aux2)
+
+	if(aux2==1):
+		Label(framePrincipal,image=img_dado1).place(x=790,y=640)
+	elif(aux2==2):
+		Label(framePrincipal,image=img_dado2).place(x=790,y=640)	
+	elif(aux2==3):
+		Label(framePrincipal,image=img_dado3).place(x=790,y=640)
+	elif(aux2==4):
+		Label(framePrincipal,image=img_dado4).place(x=790,y=640)
+	elif(aux2==5):
+		Label(framePrincipal,image=img_dado5).place(x=790,y=640)
+	elif(aux2==6):
+		Label(framePrincipal,image=img_dado6).place(x=790,y=640)	
+
+
 def preBatalla():
 	pass
 def abrirCofre():
@@ -122,9 +157,9 @@ nivelEnemigo=StringVar()
 exp_enemigo=StringVar()
 
 valorDado1=StringVar()
-valorDado1.set(1)
+valorDado1.set(0)
 valorDado2=StringVar()
-valorDado2.set(1)
+valorDado2.set(0)
 
 obj1=StringVar()
 obj2=StringVar()
@@ -244,9 +279,6 @@ bt_TirarDados = Button(frame_JuegoDeMesa,text="Tirar dados",bg="#390606",width=4
 
 et_dado1=Entry(frame_JuegoDeMesa,textvariable=valorDado1,width=3,state="readonly",justify="center").place(x=480,y=600)
 et_dado2=Entry(frame_JuegoDeMesa,textvariable=valorDado2,width=3,state="readonly",justify="center").place(x=740,y=600)
-				
-dado1=Label(frame_JuegoDeMesa,image=img_dado3).place(x=400,y=640)		
-dado2=Label(frame_JuegoDeMesa,image=img_dado5).place(x=790,y=640)
 
 # Enemigos
 Label(frame_JuegoDeMesa,text="Enemigo:",font=("Arial",12),bg="#5F0A0A",fg="white").place(x=1016,y=175)
