@@ -1,8 +1,8 @@
-from Tkinter import Widget
+from tkinter import Widget
 
 class Widget:
 
-	def __init__(self, padre, nombre, posicionX, posicion Y):
+	def __init__(self, padre, nombre, posicionX, posicionY):
 
 		self.padre = padre
 

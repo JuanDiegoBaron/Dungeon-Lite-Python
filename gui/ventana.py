@@ -1,26 +1,38 @@
-from Tkinter import Frame
+from tkinter import Frame
+from abc import ABC, abstractmethod
 
-class Ventana():
+class Ventana(ABC):
 
-	def __init__(self, padre, nombre, ancho, alto, colorFondo, posicionX, posicion Y):
+	def __init__(self, interfaz, padre, nombre):
 
+		self.interfaz=interfaz
 		self.padre = padre
 		self.nombre = nombre
 
-		self.alto = alto
-		self.ancho = ancho
+		self.ancho = 1366
+		self.alto = 768
 
-		self.colorFondo = colorFondo
+		self.colorFondo = "Grey"
 
-		self.posicionX = posicionX
-		self.posicionY = posicionY
+		self.posicionX = 0
+		self.posicionY = 0
 
-		self.frame = Frame(self.padre,width=ancho,height=alto)
+		self.frame = Frame(self.padre,width=self.ancho,height=self.alto,bg=self.colorFondo)
 
 		self.widgets = []
 
-	def cerrarVentana(self):
+	@abstractmethod
+	def recibirInformacion(self,informacion):
+		pass
+
+	def mostrarVentana(self):
+
+		self.frame.place(x=self.posicionX,y=self.posicionY)
+
+	def ocultarVentana(self):
 	
-		self.frame.forgetplace()	
+		self.frame.place_forget()
+
+
 
 

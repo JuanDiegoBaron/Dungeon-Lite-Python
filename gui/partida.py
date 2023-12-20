@@ -1,24 +1,57 @@
-# from mapa import Mapa
-# from personaje import Personaje
-from tkinter import Frame
+from tkinter import *
+from src.mapa import Mapa
+from src.personaje import Personaje
+from .ventana import Ventana
 
-class Partida:
+class Partida(Ventana):
 
-	def __init__(self, personaje, mapa):
+	def __init__(self,interfaz,padre, nombre):
+
+		super().__init__(interfaz, padre, nombre)
 
 		self.id=0
 		
-		self.personaje=personaje
+		self.personaje=""
 
 		# self.enemigo=Enemigo()
 
-		self.mapa = mapa
+		self.mapa = Mapa()
 
 		self.dado1=0
 		self.dado2=0
 
 		self.precaucionEnem=False
 		self.precaucionRecom=False
+
+		# IMAGENES
+		self.imagenOro=PhotoImage(file="assets/images/oro.png")
+		self.imagenCofre=PhotoImage(file="assets/images/cofre.png")
+		self.imagenCofreAbierto=PhotoImage(file="assets/images/cofreAbierto.png")
+		self.imagenCuadradoBlanco=PhotoImage(file="assets/images/noEmenRecom.png")
+
+		self.IMG_DADO1= PhotoImage(file="assets/images/dado1.png")
+		self.IMG_DADO2= PhotoImage(file="assets/images/dado2.png")
+		self.IMG_DADO3= PhotoImage(file="assets/images/dado3.png")
+		self.IMG_DADO4= PhotoImage(file="assets/images/dado4.png")
+		self.IMG_DADO5= PhotoImage(file="assets/images/dado5.png")
+		self.IMG_DADO6= PhotoImage(file="assets/images/dado6.png")
+
+		# iconos estadisticas
+		self.imagenCorazon = PhotoImage(file="assets/images/cora.png")
+		self.imagenEspada = PhotoImage(file="assets/images/espada.png")
+		self.imagenBarrera = PhotoImage(file="assets/images/barrera.png")
+		self.imagenArmadura = PhotoImage(file="assets/images/armadura.png")
+		self.imagenMana = PhotoImage(file="assets/images/mana.png")
+
+		# Estrellas
+		self.e0=PhotoImage(file="assets/images/noEstrellas.png")
+		self.e1=PhotoImage(file="assets/images/1s.png")
+		self.e2=PhotoImage(file="assets/images/2s.png")
+		self.e3=PhotoImage(file="assets/images/3s.png")
+
+		# Enemigos
+		self.enem2=PhotoImage(file="assets/images/esqueleto.png")
+
 
 		self.turno=0
 
@@ -30,9 +63,21 @@ class Partida:
 		#control frames
 		self.estat_expand=True
 
+	def recibirInformacion(self,info):
+		
+		if info["Mensaje"] == "Datos Personaje":
+
+			self.personaje=Personaje(info["Nombre"],info["Genero"],info["Raza"],info["Clase"],info["Vida"],info["Mana"],info["Fuerza"],info["Aguante"],info["Inteligencia"],info["Magia"],info["Agilidad"],info["Persepcion"])
+
+			self.comenzarPartida()
+
+		elif info["Mensaje"] == "Hola":
+
+			print("Chau")
+
 	def comenzarPartida(self):
 
-		self.framePrincipal=Frame(root,width=1366,height=768,bg="#33373A")
+		self.framePrincipal=Frame(self.padre,width=1366,height=768,bg="#33373A")
 		self.framePrincipal.place(x=0,y=0)
 
 		# frame superiora

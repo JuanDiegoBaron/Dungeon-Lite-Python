@@ -1,11 +1,11 @@
 class Personaje:
 
-	def __init__(self,nombre,raza,clase,vida,mana,fuerza,aguante,inteligencia,magia,agilidad,percepcion):
+	def __init__(self,nombre,genero,raza,clase,vida,mana,fuerza,aguante,inteligencia,magia,agilidad,percepcion):
 
 		self.id=0
 		self.nombre=nombre
+		self.genero=genero
 		self.raza=raza
-		# self.clase=clase
 		self.clase=clase
 
 		self.nivel=1
@@ -31,7 +31,7 @@ class Personaje:
 		self.fuerza=fuerza # cada 4 puntos de fuerza agrega 1 al daño maximo 
 		self.inteligencia=inteligencia #cada punto de inteligencia agrega 1 al dañoMagico
 		self.magia=magia # 1 de magia = 5 de manaMax
-		# self.percepcion=percepcion # Ayuda a persivir emboscadas entre otras
+		self.percepcion=percepcion # Ayuda a persivir emboscadas entre otras
 		self.agilidad=agilidad # cada punto de agilidad agrega 1 al esquivar y a probabilidadCritico
 		self.aguante=aguante # cada punto de aguante agrega 5 puntos de vida,
 

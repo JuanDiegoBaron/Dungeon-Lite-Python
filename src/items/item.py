@@ -1,6 +1,6 @@
 class Item:
 
-	def __init__(self,nombre,valor,nivel,):
+	def __init__(self,nombre,valor,nivel):
 
 		self.id=0
 		self.nombre=nombre

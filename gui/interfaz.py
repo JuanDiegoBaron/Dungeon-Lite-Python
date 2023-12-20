@@ -1,6 +1,8 @@
 from tkinter import *
-from ventana import *
-from widget import *
+from .partida import Partida
+from .menu import Menu
+from .ventana import Ventana
+from .creacionPersonaje import CreacionPersonaje
 
 class Interfaz:
 
@@ -8,31 +10,54 @@ class Interfaz:
 
 		self.root = root
 
-		self.ventanas = {}
+		self.ventanas = {
+			"Menu Principal": Menu(self,self.root,"Menu Principal"),
+			"Creacion Personaje": CreacionPersonaje(self,self.root,"Creacion Personaje"),
+			"Partida": Partida(self,self.root,"Partida")
+			}
 
-		self.agregarVentana("Menu Principal", 1360, 768, "Blue", 0, 0)
-		self.agregarVentana("Creacion Personaje", 1360, 768, "Red", 0, 0)
+		self.ventanaActual = self.ventanas["Menu Principal"]
 
-		bt_salirApp = Button(root,text="X",command=salir).place(x=1350,y=0) 
+		self.ventanaActual.mostrarVentana()
+
+		bt_salirApp = Button(root,text="X",command=self.salirApp).place(relx=1.0 ,anchor="ne")
+
 		
-	def agregarVentana(self, nombre, ancho, alto, colorFondo, posicionX, posicion Y):
+	
+		
+	def enviarInformacion(self,ventana,informacion):
 
-		self.ventanas.update({nombre}:Ventana(self.root,nombre, ancho, alto, colorFondo, posicionX, posicionY))
+		self.ventanas[ventana].recibirInformacion(informacion)
 
+	def cambiarVentana(self,nuevaVentana):
+
+		self.ventanaActual.ocultarVentana()
+
+		self.ventanaActual = self.ventanas[nuevaVentana]
+
+		self.ventanaActual.mostrarVentana()
 
 	def mostrarVentana(self, ventana):
-
-		pass
-		# ventana.place(x = ventana.x,  y = ventana.y)
+		
+		self.ventanas[ventana].mostrarVentana()
 
 	def ocultarVentana(self, ventana):
 
-		pass
+		self.ventanas[ventana].cerrarVentana()
 
 	def salirApp(self):
 	
 		self.root.destroy()		
 
 
+# root = Tk()  # Creacion de la pantalla 
+# root.attributes("-fullscreen",True)
+# root.title("DUNGEON LITE") # Establece un titulo a la ventana
+# root.resizable(0,0) # Permite agrandar/redimencionar la pantalla 
+# root.config(bg="Black")
+
+# interfaz = Interfaz(root)
+
+# interfaz.root.mainloop()
 
 
