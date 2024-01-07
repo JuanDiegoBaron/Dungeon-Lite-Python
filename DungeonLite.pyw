@@ -12,7 +12,7 @@ from random import choice, choices, randint
 from sqlite3 import *
 
 # Libreria para manipular imagenes
-from PIL import Image, ImageTk
+# from PIL import Image, ImageTk
 
 
 # modulos
