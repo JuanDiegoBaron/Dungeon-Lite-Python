@@ -19,34 +19,55 @@ BLUE = (0,0,255)
 
 class Game():
 
-	def __init__(self,screens):
+	def __init__(self):
 
 		self.running = False
 
-		self.screens = screens
+		self.root = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT)) 
+
+		self.screens = []
+
+		self.currentScreen = 0
+
+	def add_screens(self,screens):
+
+		self.screens.extend(screens)
+		# print(type(self.screens), "     ", self.screens)
 
 		self.currentScreen = self.screens[0]
+		# print("ACA    ", type(self.currentScreen))
 
+	def event_listener(self):
+
+		for event in pygame.event.get():
+
+			if event.type == pygame.QUIT:
+
+				pygame.quit()
+				sys.exit()
+			
 	def change_screen(self,newScreen):
 	
-		pass
+		index = 0
+		for screen in self.screens:
+
+			if screen.name == newScreen:
+
+				self.currentScreen = self.screens[index]
+				return 	
+
+			index+=1	
 
 	def run(self):
 	
-		print("Run")
+		
 		self.running = True
 
 		while self.running:
 
-			for event in pygame.event.get():
-
-				if event.type == pygame.QUIT:
-
-					pygame.quit()
-					sys.exit()	
+			self.event_listener()
 
 			# Logica del juego
-		
 			self.currentScreen.run()
 
 			# Actualizar pantalla
@@ -55,22 +76,24 @@ class Game():
 			# Velocidad de la animacion
 			pygame.time.Clock().tick(60)		
 
-class Screen():
+class Frame():
 
-	def __init__(self,nombre,color=BLACK,image=""):
+	def __init__(self,game,name,elements,event_listener,color=BLACK,image=""):
 
-		self.nombre=nombre
+		self.game = game
+		self.name=name
 		self.running = False
 		self.color=color
 		self.image=image
-		self.screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
-		self.elements = []
+		self.screen = game.root
+		self.elements = elements
+		self.event_listener = lambda:event_listener()
 
 	def render(self):
 	
 		if(self.image==""):
 		
-			self.screen.fill(self.color)
+			pygame.draw.rect(self.color)
 
 		else:
 
@@ -78,16 +101,29 @@ class Screen():
 			self.screen.blit(background,(0,0))
 
 	# eventos de teclado entre otros
-	def event_listener(self):
+	def common_event_listener(self):
 
 		for event in pygame.event.get():
 
 			if event.type == pygame.QUIT:
 
-				print("se cerro la ventana")
 				self.running==False	
 				pygame.quit()
 				sys.exit()
+
+			# Eventos de tecla precionada	
+			elif event.type == pygame.KEYDOWN:
+
+				# if event.key == pygame.K_SPACE:
+					
+				# 	self.game.change_screen("Character creator")
+				# 	self.running = False
+
+				if event.key == pygame.K_ESCAPE:
+
+					self.running==False	
+					pygame.quit()
+					sys.exit()
 
 	# VERIFICACIONES (coliciones,etc)
 	def update(self):
@@ -101,6 +137,7 @@ class Screen():
 
 		while self.running:
 
+			self.common_event_listener()
 			self.event_listener()
 			self.render()
 			self.update()
@@ -112,11 +149,63 @@ class Screen():
 			clock.tick(60)
 
 
-# menu = Screen(image="assets/images/texturamapa.jpg")
-menu = Screen("Menu",image="assets/images/fondo2.jpg")
-creacionPersonaje = Screen("Creacion Personaje",image="assets/images/fondo.png")
+#########################################################
+#						 MAIN							#
+#########################################################
 
-myGame = Game([menu,creacionPersonaje])
+
+myGame = Game()
+
+def event_listener_menu():
+
+	for event in pygame.event.get():
+
+			# Eventos de tecla precionada	
+			if event.type == pygame.KEYDOWN:
+
+				if event.key == pygame.K_SPACE:
+					
+					self.game.change_screen("Character creator")
+					self.running = False
+
+
+def event_listener_characterCreator():
+
+	print(" EVENTOS ESPECIFICOS")
+	for event in pygame.event.get():
+
+			# Eventos de tecla precionada	
+			if event.type == pygame.KEYDOWN:
+
+				if event.key == pygame.K_SPACE:
+					
+					self.game.change_screen("Menu")
+					self.running = False
+
+
+# VENTANAS
+screen_menu = Frame(
+	myGame, # game
+	"Menu", # name
+	[], # elementos
+	lambda:event_listener_menu(),
+	image="assets/images/fondo2.jpg" # image
+)
+
+screen_characterCreator = Frame(
+	myGame,
+	"Character creator",
+	[], # elementos
+	lambda:event_listener_characterCreator(),
+	image="assets/images/fondo.png"
+)
+
+
+
+
+myGame.add_screens([screen_menu,screen_characterCreator])
+
+myGame.run()
 
 # while True:
 
