@@ -1,7 +1,10 @@
 from tkinter import *
+from random import choice,randint
 from src.mapa import Mapa
 from src.personaje import Personaje
 from .ventana import Ventana
+from items.arma import Arma
+from src.items.armadura import Armadura
 
 class Partida(Ventana):
 
@@ -15,7 +18,7 @@ class Partida(Ventana):
 
 		# self.enemigo=Enemigo()
 
-		self.mapa = Mapa()
+		self.mapa = Mapa(self)
 
 		self.dado1=0
 		self.dado2=0
@@ -67,13 +70,10 @@ class Partida(Ventana):
 		
 		if info["Mensaje"] == "Datos Personaje":
 
-			self.personaje=Personaje(info["Nombre"],info["Genero"],info["Raza"],info["Clase"],info["Vida"],info["Mana"],info["Fuerza"],info["Aguante"],info["Inteligencia"],info["Magia"],info["Agilidad"],info["Persepcion"])
+			self.personaje=Personaje(self,info["Nombre"],info["Genero"],info["Raza"],info["Clase"],info["Vida"],info["Mana"],info["Fuerza"],info["Aguante"],info["Inteligencia"],info["Magia"],info["Agilidad"],info["Persepcion"])
 
 			self.comenzarPartida()
 
-		elif info["Mensaje"] == "Hola":
-
-			print("Chau")
 
 	def comenzarPartida(self):
 
@@ -124,7 +124,7 @@ class Partida(Ventana):
 		# entry Equipar/Desequipar/Usar/Activar
 		et_edua = Entry(self.framePrincipal,textvariable=self.objetoEDUA,width=3,justify="center",font=("Arial",15),bd=0)
 		et_edua.place(x=5,y=220)
-		bt_edua = Button(self.framePrincipal,text="Equip/Deseq/Usar/Activar",bg="#390606",width=25,command=self.personaje.EDUA,height=1,bd=0,fg="white")
+		bt_edua = Button(self.framePrincipal,text="Equip/Deseq/Usar/Activar",bg="#390606",width=25,command=self.EDUA,height=1,bd=0,fg="white")
 		bt_edua.place(x=45,y=223)
 		bt_infoItem=Button(self.framePrincipal,text="info",bg="#390606",width=5,height=1,bd=0,fg="white",command=lambda:self.infoItem(self.objetoEDUA.get()))
 		bt_infoItem.place(x=230,y=223)
@@ -139,10 +139,10 @@ class Partida(Ventana):
 
 		# Tirar dados
 		self.bt_TirarDados = Button(self.framePrincipal,text="Tirar dados",bg="#390606",width=10,height=2,bd=0,font=("Arial",15),fg="white",command=self.tirarDados)
-		# self.bt_TirarDados.place(x=2015,y=230)
+		self.bt_TirarDados.place(x=1144,y=433)
 
-		self.lb_celdasDisponibles=Label(self.framePrincipal,text=f"",font=("Arial",15),bg="#33373A",bd=0,fg="white").place(x=1130,y=290)
-
+		self.lb_celdasDisponibles=Label(self.framePrincipal,text=f"",font=("Arial",15),bg="#33373A",bd=0,fg="white")
+		self.lb_celdasDisponibles.place(x=1130,y=290)
 
 
 		# Cofres / Recompenzas
@@ -151,8 +151,8 @@ class Partida(Ventana):
 		self.frameRecompenza.place(x=1120,y=100)
 
 		self.lb_recom=Label(self.frameRecompenza,text="",fg="white",bg="green").place(x=20,y=5)
-		self.imagenCofre=Label(self.frameRecompenza,image=imagenCuadradoBlanco).place(x=20,y=30)
-		self.nivelCofre=Label(self.frameRecompenza,image=e0).place(x=110,y=30)
+		self.imagenCofre=Label(self.frameRecompenza,image=self.imagenCuadradoBlanco).place(x=20,y=30)
+		self.nivelCofre=Label(self.frameRecompenza,image=self.e0).place(x=110,y=30)
 		
 
 		self.bt_abrir_cofre = Button(self.frameRecompenza,text="Abrir",bg="#40E74F",width=8,height=1,bd=0,font=("Arial",15),fg="white",command=self.abrirCofre)
@@ -179,7 +179,7 @@ class Partida(Ventana):
 		self.bt_moverIzquierda=Button(self.framePrincipal,width=5,text="⇦",command=lambda:self.mapa.mover("izquierda",self))
 		# self.bt_moverIzquierda.place(x=1150,y=550)
 
-		root.bind("<KeyPress>", self.alPresionaTecla)
+		self.interfaz.root.bind("<KeyPress>", self.alPresionaTecla)
 
 	def registrarPartida(self):	
 		
@@ -255,8 +255,8 @@ class Partida(Ventana):
 		bt_luchar=Button(self.frameEnemigo,text="Luchar",bg="#961010",width=20,height=1,bd=0,font=("Arial",12),fg="white").place(x=10,y=120)
 		bt_huir=Button(self.frameEnemigo,text="Huir",bg="#961010",width=10,height=1,bd=0,font=("Arial",12),fg="white").place(x=1145,y=150)
 
-		lb_imgCuadroblanco=Label(self.frameEnemigo,image=imagenCuadradoBlanco).place(x=5,y=5)
-		lb_imgE0=Label(self.frameEnemigo,image=e0).place(x=100,y=5)
+		lb_imgCuadroblanco=Label(self.frameEnemigo,image=self.imagenCuadradoBlanco).place(x=5,y=5)
+		lb_imgE0=Label(self.frameEnemigo,image=self.e0).place(x=100,y=5)
 
 	def crearFrameSuperior(self):
 	
@@ -266,22 +266,22 @@ class Partida(Ventana):
 		self.frameSuperior.place(x=5,y=5)
 
 		# label vida
-		Label(self.frameSuperior,image=imagenCorazon,bg="#2A2A2A").place(x=0,y=2)
+		Label(self.frameSuperior,image=self.imagenCorazon,bg="#2A2A2A").place(x=0,y=2)
 		Label(self.frameSuperior,text=f"{self.personaje.vida}/{self.personaje.vidaMax}  ",font=("Arial",15),bg="#2A2A2A",bd=0,fg="white").place(x=50,y=10)
 		# label daño
-		Label(self.frameSuperior,image=imagenEspada,bg="#2A2A2A").place(x=140,y=2)
+		Label(self.frameSuperior,image=self.imagenEspada,bg="#2A2A2A").place(x=140,y=2)
 		Label(self.frameSuperior,text=f"{self.personaje.dañoMin} - {self.personaje.dañoMax}  ",font=("Arial",15),bg="#2A2A2A",bd=0,fg="white").place(x=180,y=10)
 		# label mana
-		Label(self.frameSuperior,image=imagenMana,bg="#2A2A2A").place(x=240,y=2)
+		Label(self.frameSuperior,image=self.imagenMana,bg="#2A2A2A").place(x=240,y=2)
 		Label(self.frameSuperior,text=f"{self.personaje.mana}/{self.personaje.manaMax}  ",font=("Arial",15),bg="#2A2A2A",bd=0,fg="white").place(x=280,y=10)
 		# label barrera
-		Label(self.frameSuperior,image=imagenBarrera,bg="#2A2A2A").place(x=355,y=2)
+		Label(self.frameSuperior,image=self.imagenBarrera,bg="#2A2A2A").place(x=355,y=2)
 		Label(self.frameSuperior,text=f"{self.personaje.barrera}",font=("Arial",15),bg="#2A2A2A",bd=0,fg="white").place(x=395,y=10)
 		# label armadura
-		Label(self.frameSuperior,image=imagenArmadura,bg="#2A2A2A").place(x=435,y=2)
+		Label(self.frameSuperior,image=self.imagenArmadura,bg="#2A2A2A").place(x=435,y=2)
 		Label(self.frameSuperior,text=f"{self.personaje.armadura}",font=("Arial",15),bg="#2A2A2A",bd=0,fg="white").place(x=475,y=10)
 		# oro
-		Label(self.frameSuperior,image=imagenOro,bg="#2A2A2A").place(x=520,y=2)
+		Label(self.frameSuperior,image=self.imagenOro,bg="#2A2A2A").place(x=520,y=2)
 		Label(self.frameSuperior,text=self.personaje.oro,font=("Arial",15),bg="#2A2A2A",fg="white",bd=0).place(x=560,y=10)
 		# nombre PJ
 		Label(self.frameSuperior,text=self.personaje.nombre,font=("Arial",15),bg="#2A2A2A",fg="white",bd=0).place(x=620,y=10)
@@ -420,32 +420,32 @@ class Partida(Ventana):
 			self.dado1=choice([1,2,3,4,5,6])
 
 			if(self.dado1==1):
-				Label(self.framePrincipal,image=IMG_DADO1).place(x=1140,y=430)
+				Label(self.framePrincipal,image=self.IMG_DADO1).place(x=1140,y=430)
 			elif(self.dado1==2):
-				Label(self.framePrincipal,image=IMG_DADO2).place(x=1140,y=430)	
+				Label(self.framePrincipal,image=self.IMG_DADO2).place(x=1140,y=430)	
 			elif(self.dado1==3):
-				Label(self.framePrincipal,image=IMG_DADO3).place(x=1140,y=430)
+				Label(self.framePrincipal,image=self.IMG_DADO3).place(x=1140,y=430)
 			elif(self.dado1==4):
-				Label(self.framePrincipal,image=IMG_DADO4).place(x=1140,y=430)
+				Label(self.framePrincipal,image=self.IMG_DADO4).place(x=1140,y=430)
 			elif(self.dado1==5):
-				Label(self.framePrincipal,image=IMG_DADO5).place(x=1140,y=430)
+				Label(self.framePrincipal,image=self.IMG_DADO5).place(x=1140,y=430)
 			elif(self.dado1==6):
-				Label(self.framePrincipal,image=IMG_DADO6).place(x=1140,y=430)
+				Label(self.framePrincipal,image=self.IMG_DADO6).place(x=1140,y=430)
 
 			self.dado2=choice([1,2,3,4,5,6])
 
 			if(self.dado2==1):
-				Label(self.framePrincipal,image=IMG_DADO1).place(x=1200,y=430)
+				Label(self.framePrincipal,image=self.IMG_DADO1).place(x=1200,y=430)
 			elif(self.dado2==2):
-				Label(self.framePrincipal,image=IMG_DADO2).place(x=1200,y=430)	
+				Label(self.framePrincipal,image=self.IMG_DADO2).place(x=1200,y=430)	
 			elif(self.dado2==3):
-				Label(self.framePrincipal,image=IMG_DADO3).place(x=1200,y=430)
+				Label(self.framePrincipal,image=self.IMG_DADO3).place(x=1200,y=430)
 			elif(self.dado2==4):
-				Label(self.framePrincipal,image=IMG_DADO4).place(x=1200,y=430)
+				Label(self.framePrincipal,image=self.IMG_DADO4).place(x=1200,y=430)
 			elif(self.dado2==5):
-				Label(self.framePrincipal,image=IMG_DADO5).place(x=1200,y=430)
+				Label(self.framePrincipal,image=self.IMG_DADO5).place(x=1200,y=430)
 			elif(self.dado2==6):
-				Label(self.framePrincipal,image=IMG_DADO6).place(x=1200,y=430)
+				Label(self.framePrincipal,image=self.IMG_DADO6).place(x=1200,y=430)
 
 			
 			self.personaje.movimientos=self.dado1+self.dado2
@@ -877,8 +877,8 @@ class Partida(Ventana):
 				self.precaucionRecom=False
 
 				# reseteo de imagenes
-				self.nivelCofre=Label(self.frameRecompenza,image=e0).place(x=110,y=30)
-				self.imagenCofre=Label(self.frameRecompenza,image=imagenCofreAbierto).place(x=20,y=30)
+				self.nivelCofre=Label(self.frameRecompenza,image=self.e0).place(x=110,y=30)
+				self.imagenCofre=Label(self.frameRecompenza,image=self.imagenCofreAbierto).place(x=20,y=30)
 				self.lb_recom=Label(self.frameRecompenza,text="                                  ",fg="white",bg="green").place(x=20,y=5)
 			
 			elif(rareza==2):
@@ -889,16 +889,16 @@ class Partida(Ventana):
 					self.precaucionRecom=False
 
 					# reseteo de imagenes
-					self.nivelCofre=Label(self.frameRecompenza,image=e0).place(x=110,y=30)
-					self.imagenCofre=Label(self.frameRecompenza,image=imagenCofreAbierto).place(x=20,y=30)
+					self.nivelCofre=Label(self.frameRecompenza,image=self.e0).place(x=110,y=30)
+					self.imagenCofre=Label(self.frameRecompenza,image=self.imagenCofreAbierto).place(x=20,y=30)
 					self.lb_recom=Label(self.frameRecompenza,text="                                 ",fg="white",bg="green").place(x=20,y=5)
 				else:
 
 					self.precaucionRecom=False
 
 					# reseteo de imagenes
-					self.nivelCofre=Label(self.frameRecompenza,image=e0).place(x=110,y=30)
-					self.imagenCofre=Label(self.frameRecompenza,image=imagenCuadradoBlanco).place(x=20,y=30)
+					self.nivelCofre=Label(self.frameRecompenza,image=self.e0).place(x=110,y=30)
+					self.imagenCofre=Label(self.frameRecompenza,image=self.imagenCuadradoBlanco).place(x=20,y=30)
 					self.lb_recom=Label(self.frameRecompenza,text="                                 ",fg="white",bg="green").place(x=20,y=5)
 
 					self.txt_Consola.insert(1.5,f"{self.turno}) no tienes llaves 1\n")
@@ -911,8 +911,8 @@ class Partida(Ventana):
 					self.precaucionRecom=False
 
 					# reseteo de imagenes
-					self.nivelCofre=Label(self.frameRecompenza,image=e0).place(x=110,y=30)
-					self.imagenCofre=Label(self.frameRecompenza,image=imagenCofreAbierto).place(x=20,y=30)
+					self.nivelCofre=Label(self.frameRecompenza,image=self.e0).place(x=110,y=30)
+					self.imagenCofre=Label(self.frameRecompenza,image=self.imagenCofreAbierto).place(x=20,y=30)
 					self.lb_recom=Label(self.frameRecompenza,text="                           ",fg="white",bg="green").place(x=20,y=5)
 					
 				else:
@@ -920,8 +920,8 @@ class Partida(Ventana):
 					self.precaucionRecom=False
 
 					# reseteo de imagenes
-					self.nivelCofre=Label(self.frameRecompenza,image=e0).place(x=110,y=30)
-					self.imagenCofre=Label(self.frameRecompenza,image=imagenCuadradoBlanco).place(x=20,y=30)
+					self.nivelCofre=Label(self.frameRecompenza,image=self.e0).place(x=110,y=30)
+					self.imagenCofre=Label(self.frameRecompenza,image=self.imagenCuadradoBlanco).place(x=20,y=30)
 					self.lb_recom=Label(self.frameRecompenza,text="                           ",fg="white",bg="green").place(x=20,y=5)
 	
 					self.txt_Consola.insert(1.5,f"{self.turno}) no tienes llaves 2\n")
@@ -932,7 +932,12 @@ class Partida(Ventana):
 
 	def infoItem(self,idItem):
 
-		if(idItem==""):
+		try:
+			int(idItem)
+		except:
+			return	
+
+		if(idItem=="" or int(self.objetoEDUA.get()) > len(self.personaje.inventario) or len(self.personaje.inventario) == 0):
 			return
 
 		if(type(self.personaje.inventario[int(idItem)])==Arma or type(self.personaje.inventario[int(idItem)])==Armadura):
@@ -941,6 +946,23 @@ class Partida(Ventana):
 			# self.objetoEDUA.set("")
 			# self.crearFrameEstadisticas()
 			# self.crearFrameSuperior()Expandido
+
+	def EDUA(self):
+
+		try:
+			int(self.objetoEDUA.get())
+		except Exception as e:
+			return
+
+		if(self.objetoEDUA.get()=="" or int(self.objetoEDUA.get()) > len(self.personaje.inventario) or len(self.personaje.inventario) == 0):
+			return
+
+		if(type(self.personaje.inventario[int(self.objetoEDUA.get())])==Arma or type(self.personaje.inventario[int(self.objetoEDUA.get())])==Armadura):
+			
+			self.personaje.inventario[int(self.objetoEDUA.get())].equiparDesequipar()
+			self.objetoEDUA.set("")
+			self.crearFrameEstadisticas()
+			self.crearFrameSuperior()		
 
 	def probabilidadTesoro(self):
 
@@ -953,7 +975,7 @@ class Partida(Ventana):
 		if(p==1):
 
 			# imagen cofre
-			self.imagenCofre=Label(self.frameRecompenza,image=imagenCofre).place(x=20,y=30)
+			self.imagenCofre=Label(self.frameRecompenza,image=self.imagenCofre).place(x=20,y=30)
 
 			# probabilidad de que sea un cofre * , ** o ***
 			global rareza 
@@ -961,16 +983,16 @@ class Partida(Ventana):
 
 			if(rareza==1):
 				self.lb_recom=Label(self.frameRecompenza,text="no requiere llave",fg="white",bg="green").place(x=20,y=5)
-				self.nivelCofre=Label(self.frameRecompenza,image=e1).place(x=110,y=30)
+				self.nivelCofre=Label(self.frameRecompenza,image=self.e1).place(x=110,y=30)
 				print("Encontraste un cofre nivel 1")
 			elif(rareza==2):
 			
 				self.lb_recom=Label(self.frameRecompenza,text="requiere llave nivel 1",fg="white",bg="green").place(x=20,y=5)
-				self.nivelCofre=Label(self.frameRecompenza,image=e2).place(x=110,y=30)	
+				self.nivelCofre=Label(self.frameRecompenza,image=self.e2).place(x=110,y=30)	
 				print("Encontraste un cofre nivel 2")
 			else:
 				self.lb_recom=Label(self.frameRecompenza,text="requiere llave nivel 2",fg="white",bg="green").place(x=20,y=5)
-				self.nivelCofre=Label(self.frameRecompenza,image=e3).place(x=110,y=30)
+				self.nivelCofre=Label(self.frameRecompenza,image=self.e3).place(x=110,y=30)
 				print("Encontraste un cofre nivel 3")	
 
 			self.precaucionRecom=True
@@ -989,11 +1011,13 @@ class Partida(Ventana):
 
 		self.framePrincipal.destroy()	
 
+	# hacer la logistica
 	def generarMision(self,tipo):
 	
 		mision=Mision()
 
+	# terminar
 	def ejecutarComando(self):
 
 		print(self.consola.get())
-		self.aumentarHora(int(self.consola.get()))
+		#self.aumentarHora(int(self.consola.get()))

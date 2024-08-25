@@ -219,25 +219,27 @@ class CreacionPersonaje(Ventana):
 		mana=int(self.magia.get())*5+100
 		# print(mana)
 
-		datosPersonaje = {
-			"Mensaje":"Datos Personaje",
-			"Genero": self.genero.get(),
-			"Nombre":self.nombrePersonaje.get(),
-			"Raza":self.razaPersonaje.get(),
-			"Clase":self.clasePersonaje.get(),
-			"Vida":vida,
-			"Mana":mana,
-			"Fuerza":int(self.fuerza.get()),
-			"Aguante":int(self.aguante.get()),
-			"Agilidad":int(self.agilidad.get()),
-			"Inteligencia":int(self.inteligencia.get()),
-			"Magia":int(self.magia.get()),
-			"Persepcion":int(self.persepcion.get())
-		}
+		if(self.nombrePersonaje.get() != ""):
 
-		# print(datosPersonaje)
+			datosPersonaje = {
+				"Mensaje":"Datos Personaje",
+				"Genero": self.genero.get(),
+				"Nombre":self.nombrePersonaje.get(),
+				"Raza":self.razaPersonaje.get(),
+				"Clase":self.clasePersonaje.get(),
+				"Vida":vida,
+				"Mana":mana,
+				"Fuerza":int(self.fuerza.get()),
+				"Aguante":int(self.aguante.get()),
+				"Agilidad":int(self.agilidad.get()),
+				"Inteligencia":int(self.inteligencia.get()),
+				"Magia":int(self.magia.get()),
+				"Persepcion":int(self.persepcion.get())
+			}
 
-		self.interfaz.enviarInformacion("Partida",datosPersonaje)
+			# print(datosPersonaje)
+
+			self.interfaz.enviarInformacion("Partida",datosPersonaje)
 
 	def cambiarGenero(self):
 

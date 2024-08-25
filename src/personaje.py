@@ -1,7 +1,8 @@
 class Personaje:
 
-	def __init__(self,nombre,genero,raza,clase,vida,mana,fuerza,aguante,inteligencia,magia,agilidad,percepcion):
+	def __init__(self,partida,nombre,genero,raza,clase,vida,mana,fuerza,aguante,inteligencia,magia,agilidad,percepcion):
 
+		self.partida = partida
 		self.id=0
 		self.nombre=nombre
 		self.genero=genero
@@ -101,14 +102,4 @@ class Personaje:
 		
 			self.exp+=XP	
 
-	def EDUA(self):
-
-		if(partida.objetoEDUA.get()==""):
-			return
-
-		if(type(partida.personaje.inventario[int(partida.objetoEDUA.get())])==Arma or type(partida.personaje.inventario[int(partida.objetoEDUA.get())])==Armadura):
-			
-			partida.personaje.inventario[int(partida.objetoEDUA.get())].equiparDesequipar()
-			partida.objetoEDUA.set("")
-			partida.crearFrameEstadisticas()
-			partida.crearFrameSuperior()
+	

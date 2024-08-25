@@ -1,8 +1,4 @@
 from tkinter import *
-from .partida import Partida
-from .menu import Menu
-from .ventana import Ventana
-from .creacionPersonaje import CreacionPersonaje
 
 class Interfaz:
 
@@ -10,23 +6,26 @@ class Interfaz:
 
 		self.root = root
 
-		self.ventanas = {
-			"Menu Principal": Menu(self,self.root,"Menu Principal"),
-			"Creacion Personaje": CreacionPersonaje(self,self.root,"Creacion Personaje"),
-			"Partida": Partida(self,self.root,"Partida")
-			}
+		self.ventanas = {}
 
-		self.ventanaActual = self.ventanas["Menu Principal"]
+		self.bt_salirApp = Button(root,text="X",command=self.salirApp)
+		self.bt_salirApp.place(relx=1.0 ,anchor="ne")
 
+	def agregarVentanas(self,ventanas):
+
+		self.ventanas = ventanas	
+	
+	def setVentanaActual(self,ventana):
+
+		self.ventanaActual = self.ventanas[ventana]
 		self.ventanaActual.mostrarVentana()
 
-		bt_salirApp = Button(root,text="X",command=self.salirApp).place(relx=1.0 ,anchor="ne")
-
-		
-	
-		
+	# String Ventana
+	# Dic informacion	
 	def enviarInformacion(self,ventana,informacion):
 
+		# la clave de la ventada destinataria, llama al metodo recibir informacion
+		# la informacion debe tener una clave llamada "Mensaje"
 		self.ventanas[ventana].recibirInformacion(informacion)
 
 	def cambiarVentana(self,nuevaVentana):

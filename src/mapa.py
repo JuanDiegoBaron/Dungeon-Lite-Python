@@ -1,9 +1,11 @@
 from tkinter import PhotoImage
+from tkinter import Label
 
 class Mapa:
 
-	def __init__(self):
+	def __init__(self,partida):
 
+		self.partida = partida
 		self.id=0
 		self.x=0
 		self.y=0
@@ -20,7 +22,7 @@ class Mapa:
 
 			print("Zona verde")
 			self.zona="Amistosa"
-			Label(partida.frameMapa,text="verde").place(x=0,y=100)
+			Label(self.partida.frameMapa,text="verde").place(x=0,y=100)
 
 		#ZONAS HOSTILES
 		elif(self.x < -380 and self.x > -680 and self.y < -60 and self.y > -300
@@ -36,13 +38,13 @@ class Mapa:
 
 			print("Zona roja")
 			self.zona="Hostil"
-			Label(partida.frameMapa,text="Roja").place(x=0,y=100)
+			Label(self.partida.frameMapa,text="Roja").place(x=0,y=100)
 
 		else:
 
 			print("Zona amarilla")
 			self.zona="Neutral"
-			Label(partida.frameMapa,text="amarilla").place(x=0,y=100)		
+			Label(self.partida.frameMapa,text="amarilla").place(x=0,y=100)		
 
 	def dibujarMapa(self,framePrincipal):
 
@@ -153,7 +155,7 @@ class Mapa:
 	def mover(self,direccion,partida):
 
 
-		if(self.coliciona(self.x,self.y,direccion) or partida.precaucionEnem or partida.precaucionRecom or partida.personaje.movimientos==0):
+		if(self.coliciona(self.x,self.y,direccion) or self.partida.precaucionEnem or self.partida.precaucionRecom or self.partida.personaje.movimientos==0):
 			return
 		else:
 
@@ -174,24 +176,24 @@ class Mapa:
 				self.x+=20		
 
 			#reseteo de las imagenes de recompenza
-			partida.nivelCofre=Label(partida.frameRecompenza,image=e0).place(x=110,y=30)
-			partida.imagenCofre=Label(partida.frameRecompenza,image=imagenCuadradoBlanco).place(x=20,y=30)
+			self.partida.nivelCofre=Label(self.partida.frameRecompenza,image=self.partida.e0).place(x=110,y=30)
+			self.partida.imagenCofre=Label(self.partida.frameRecompenza,image=self.partida.imagenCuadradoBlanco).place(x=20,y=30)
 
-			partida.aumentarHora(1)
+			self.partida.aumentarHora(1)
 
 			# self.calcularZona()
 
-			partida.personaje.movimientos-=1
-			partida.personaje.celdasAvanzadas+=1
-			partida.crearFrameSuperior()
+			self.partida.personaje.movimientos-=1
+			self.partida.personaje.celdasAvanzadas+=1
+			self.partida.crearFrameSuperior()
 
-			Label(partida.framePrincipal,text=f"{partida.personaje.movimientos} celdas \ndisponibles",font=("Arial",15),bg="#33373A",bd=0,fg="white").place(x=1260,y=430)
+			Label(self.partida.framePrincipal,text=f"{self.partida.personaje.movimientos} celdas \ndisponibles",font=("Arial",15),bg="#33373A",bd=0,fg="white").place(x=1260,y=430)
 
-			partida.probabilidadTesoro()
+			self.partida.probabilidadTesoro()
 			
-			Label(partida.frameMapa,image=self.imagenFondoMapa).place(x=0,y=0)
-			Label(partida.frameMapa,image=self.imagenMapa).place(x=self.x,y=self.y)
-			Label(partida.frameMapa,image=self.pj).place(x=100,y=100)
-			Label(partida.framePrincipal,text=f"{self.x}    ",font=("Arial",15),bg="#2A2A2A",fg="white").place(x=1170,y=730)
-			Label(partida.framePrincipal,text=f"{self.y}    ",font=("Arial",15),bg="#2A2A2A",fg="white").place(x=1270,y=730)
+			Label(self.partida.frameMapa,image=self.imagenFondoMapa).place(x=0,y=0)
+			Label(self.partida.frameMapa,image=self.imagenMapa).place(x=self.x,y=self.y)
+			Label(self.partida.frameMapa,image=self.pj).place(x=100,y=100)
+			Label(self.partida.framePrincipal,text=f"{self.x}    ",font=("Arial",15),bg="#2A2A2A",fg="white").place(x=1170,y=730)
+			Label(self.partida.framePrincipal,text=f"{self.y}    ",font=("Arial",15),bg="#2A2A2A",fg="white").place(x=1270,y=730)
 

@@ -12,24 +12,27 @@ from random import choice, choices, randint
 from sqlite3 import *
 
 # Libreria para manipular imagenes
-from PIL import Image, ImageTk
+#from PIL import Image, ImageTk
 
 
 # modulos
 from gui.interfaz import Interfaz
+from gui.menu import Menu
+from gui.creacionPersonaje import CreacionPersonaje
+from gui.partida import Partida
 
-# ULTIMA TAREA, YA ERREGLE EL PROBLEMA DE LOS MODULOS
-# AHORA TENGO QUE ARREGLAR LA CLASE PARTIDA PARA QUE MUESTRE EL JUEGO
 
 """ TAREAS
-	- VER QUE PUEDO MODULARIZAR EN LA CLASE PARTIDA
+	- hay referencias que estan mal. por ejemplo en mapa hay una referencia de la partida. y de otras variables.
 """
 
 """ IDEAS PARA AGREGAR ,
 	¡¡ ojo pueden  ser complicadas !!
 
-	* AGREGAR ANIMACIONES
+	* AGREGAR ANIMACIONES (NO)
 		pueden haber muchas animaciones en el juego, tengo que buscar como se hacen
+
+	* AVERIGUAR COMO AGREGAR TOOLTIP (recuadro de texto que da info cuando tenes el mouse arriba de un elemento)
 
 	* Agregar un mercado real, por ejemplo, los precios sueben y bajan, y en cada reino tienen un mercado diferente ?? 
 
@@ -87,7 +90,7 @@ root.attributes("-fullscreen",True)
 root.title("DUNGEON LITE") # Establece un titulo a la ventana
 root.resizable(0,0) # Permite agrandar/redimencionar la pantalla 
 root.config(bg="Black")
-
+	
 #____________________________________ VARIABLES GLOBALES______________________________
 
 # SI SE AGREGA UN NUEVO MATERIAL, SE TIENE QUE AGREGAR A LA LISTA DE MATERIALES DEL PERSONAJE personaje.materiales={aqui}
@@ -108,8 +111,14 @@ materialesEpicos=["Alma","Polvo de estrellas","Diamante","Corazon de piedra","Es
 
 interfaz = Interfaz(root)
 
-# interfaz.mostrarVentana("Menu Principal")
-# interfaz.ocultarVentana("Menu Principal")
+ventanas = {
+	"Menu Principal": Menu(interfaz,root,"Menu Principal"),
+	"Creacion Personaje": CreacionPersonaje(interfaz,root,"Creacion Personaje"),
+	"Partida": Partida(interfaz,root,"Partida")
+}
+
+interfaz.agregarVentanas(ventanas)
+interfaz.setVentanaActual("Menu Principal")
 
 interfaz.root.mainloop()
 
